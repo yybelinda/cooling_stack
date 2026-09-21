@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
+      - name: Run regression tests
+        run: pytest tests/ -v
+      - name: Smoke run (full solve + figures, headless)
+        run: |
+          python - <<'EOF'
+          import matplotlib
+          matplotlib.use('Agg')
+          import cooling_main
+          bc, results = cooling_main.run_all()
+          assert len(results) == 4
+          print('smoke run OK:', {k: round(v['T_metal'], 1) for k, v in results.items()})
+          EOF
