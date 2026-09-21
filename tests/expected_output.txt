@@ -1,0 +1,111 @@
+====================================================================
+  cooling_stack V1 — serial-path cooling scheme solver (reference-engine design point defaults)
+====================================================================
+Boundary: P2=333.8kPa  T2=494.1K  T_gas=1334K  m_gas=0.1342kg/s  m_cool=17.96g/s
+Geometry: D_liner=63.7mm  L=172mm  wall: TBC 0.2mm + Hastelloy X 1.5mm  dP budget=13.4kPa
+
+--- Scheme A0_baseline_smooth_nofilm ---
+  [cold ] smooth backside  span=172.0mm
+  [film ] film row 1  span=0.0mm
+          d = 0.002
+          n_rows = 12
+          n_per_row = 20
+          Cd = 0.8
+          s_ref = 0.001
+  [SWITCH] Modules with span<1.0mm treated as disabled: film row 1
+  Converged: bisection, 45 evals  T_ad=1334.0K  Tw_hot=1163.1K  Tw_cold=1158.7K  T_metal=1158.7K
+  eta_overall=0.000  T_c_film=538.5K (rise 44.4K)  q=23.43kW/m2  dP_total=0.00kPa
+    [cold] smooth backside        h=    36.5  A=  34.4m2*1e-3  q=  806.5W  T_out= 538.5K  dP=0.00kPa  (turbulent)
+    [film] film row 1             span=0.0mm<MIN_SPAN, disabled (film rows are sparingly used on small engines; module retained for reference)
+    Energy check: cold-side absorption sum q=806.5W vs hot-side supply q*A_wall=806.6W (residual 0.0%)
+    [ADVICE] Wall temperature margin only 39K (<100K warning line) — recheck the actual stress level (allowable is for 30MPa/1000h; re-derive at your stress)
+    [ADVICE] No film active (eta=0) and wall margin <150K: if the dP budget allows, try enabling a FilmRow (set span>0) — README Example 2 reference: -390K for 0.31kPa
+
+--- Scheme A1_ribbed_film_crosscheck ---
+  [cold ] ribbed channel  span=172.0mm
+          rib_height = 0.0005
+          rib_pitch = 0.01
+          rib_angle = 90.0
+  [film ] film row 1  span=5.6mm
+          d = 0.002
+          n_rows = 12
+          n_per_row = 20
+          Cd = 0.8
+          s_ref = 0.001
+  Converged: bisection, 45 evals  T_ad=837.1K  Tw_hot=763.2K  Tw_cold=760.9K  T_metal=760.9K
+  eta_overall=0.607  T_c_film=514.7K (rise 20.6K)  q=10.90kW/m2  dP_total=0.31kPa
+    [cold] ribbed channel         h=    42.3  A=  34.4m2*1e-3  q=  375.2W  T_out= 514.7K  dP=0.00kPa  (turbulent)
+    [film] film row 1             x/s=10.0  M_annulus=0.171  M_jet=0.707  eta=0.607  dP=0.31kPa
+    Energy check: cold-side absorption sum q=375.2W vs hot-side supply q*A_wall=375.2W (residual 0.0%)
+    [ADVICE] All indicators within thresholds; no changes suggested
+
+--- Scheme B_impingement_nofilm ---
+  [cold ] impingement (dome)  span=40.0mm
+          dP_j = 5000.0
+          n_j = 15
+          H = 0.0128
+  [cold ] smooth backside (aft)  span=132.0mm
+  [film ] film row 1  span=0.0mm
+          d = 0.002
+          n_rows = 12
+          n_per_row = 20
+          Cd = 0.8
+          s_ref = 0.001
+  [SWITCH] Modules with span<1.0mm treated as disabled: film row 1
+  Converged: bisection, 45 evals  T_ad=1334.0K  Tw_hot=681.9K  Tw_cold=662.1K  T_metal=662.1K
+  eta_overall=0.000  T_c_film=662.1K (rise 168.0K)  q=88.69kW/m2  dP_total=5.00kPa
+    [cold] impingement (dome)     h=  8739.8  A=   8.0m2*1e-3  q= 3053.0W  T_out= 662.1K  dP=5.00kPa  [outlet clamped to wall T: effectiveness->1]  (impingement Re_j=16314, H/d=3.6)
+    [cold] smooth backside (aft)  h=    38.5  A=  26.4m2*1e-3  q=    0.0W  T_out= 662.1K  dP=0.00kPa  (turbulent)
+    [film] film row 1             span=0.0mm<MIN_SPAN, disabled (film rows are sparingly used on small engines; module retained for reference)
+    Energy check: cold-side absorption sum q=3053.0W vs hot-side supply q*A_wall=3052.9W (residual 0.0%)
+    [ADVICE] Cold-side saturation (coolant temperature rise ~= T_metal - T2): lengthening/strengthening cold-side modules is ineffective; bottleneck = coolant heat capacity. Effective levers: more coolant / a film row / lower T_gas
+
+--- Scheme C_impingement_dual_film ---
+  [cold ] impingement (dome)  span=40.0mm
+          dP_j = 5000.0
+          n_j = 15
+          H = 0.0128
+  [cold ] smooth backside (aft)  span=132.0mm
+  [film ] film row 1  span=5.6mm
+          d = 0.002
+          n_rows = 12
+          n_per_row = 20
+          Cd = 0.8
+          s_ref = 0.001
+  [film ] film row 2  span=5.6mm
+          d = 0.002
+          n_rows = 12
+          n_per_row = 20
+          Cd = 0.8
+          s_ref = 0.001
+  Converged: bisection, 45 evals  T_ad=740.9K  Tw_hot=550.8K  Tw_cold=544.5K  T_metal=544.5K
+  eta_overall=0.751  T_c_film=544.5K (rise 50.4K)  q=26.61kW/m2  dP_total=5.65kPa
+    [cold] impingement (dome)     h=  8739.8  A=   8.0m2*1e-3  q=  916.0W  T_out= 544.5K  dP=5.00kPa  [outlet clamped to wall T: effectiveness->1]  (impingement Re_j=16314, H/d=3.6)
+    [cold] smooth backside (aft)  h=    37.1  A=  26.4m2*1e-3  q=    0.0W  T_out= 544.5K  dP=0.00kPa  (turbulent)
+    [film] film row 1             x/s=20.0  M_annulus=0.171  M_jet=0.707  eta=0.368  dP=0.32kPa
+    [film] film row 2             x/s=10.0  M_annulus=0.171  M_jet=0.707  eta=0.607  dP=0.32kPa
+    Energy check: cold-side absorption sum q=916.0W vs hot-side supply q*A_wall=915.8W (residual 0.0%)
+    [ADVICE] Cold-side saturation (coolant temperature rise ~= T_metal - T2): lengthening/strengthening cold-side modules is ineffective; bottleneck = coolant heat capacity. Effective levers: more coolant / a film row / lower T_gas
+
+====================================================================
+  Generating figures
+====================================================================
+  [fig1] /home/z/my-project/combustor_design/cooling_stack_github/fig1_layout_A1_ribbed_film_crosscheck.png
+  [fig1] /home/z/my-project/combustor_design/cooling_stack_github/fig1_layout_B_impingement_nofilm.png
+  [fig2] /home/z/my-project/combustor_design/cooling_stack_github/fig2_coolant_path_A0_baseline_smooth_nofilm.png
+  [fig2] /home/z/my-project/combustor_design/cooling_stack_github/fig2_coolant_path_A1_ribbed_film_crosscheck.png
+  [fig2] /home/z/my-project/combustor_design/cooling_stack_github/fig2_coolant_path_B_impingement_nofilm.png
+  [fig2] /home/z/my-project/combustor_design/cooling_stack_github/fig2_coolant_path_C_impingement_dual_film.png
+  [fig3] /home/z/my-project/combustor_design/cooling_stack_github/fig3_scheme_comparison.png
+
+====================================================================
+  Self-test: A1 (correlation cross-check) vs independent multi-station reference
+====================================================================
+  Multi-station reference (station-by-station, row-by-row): T_metal_max=750K (frozen T_c=T2, ribbed)
+  A1 (single-node lumped): T_metal=760.9K  difference=+10.9K
+  Sources of the difference (convention, not error):
+    1) the reference freezes T_c=T2; A1 includes the coolant temperature rise (+20.6K) -> wall T runs higher
+    2) single-node lumping vs station-by-station (same hot-station h_g, area lumping approximation)
+  Criterion: |difference| <= 25K (coolant-rise dominated) -> PASS
+
+--- cooling_stack V1 run complete ---
