@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: >-
+  cooling_stack: a modular 1D cooling-stack design tool for small
+  gas-turbine combustor liners
+authors:
+  - family-names: Yang
+    given-names: Yang
+    email: yybelinda@gmail.com
+    website: https://github.com/yybelinda
+version: 1.2.0
+date-released: "2026-09-21"
+license: MIT
+repository-code: "https://github.com/yybelinda/cooling_stack"
+abstract: >-
+  A serial-path, single-node cooling-stack model for the liner of small
+  gas-turbine combustors. Cold-side modules (smooth backside convection,
+  ribbed channel, impingement) and hot-side film rows are composed freely
+  along the coolant path; the solver closes the energy balance on the
+  cold-side wall temperature by bisection, including coolant heat-up and
+  a pressure-drop budget. Includes an automatic advice layer that flags
+  wall-temperature margin, cold-side saturation, and film-ineffectiveness
+  conditions.
+keywords:
+  - combustor cooling
+  - film cooling
+  - impingement cooling
+  - 1D design
+  - gas turbine

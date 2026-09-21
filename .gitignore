@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+pytest_cache/
+# runtime figures (committed screenshots live in docs/figures/)
+fig1_*.png
+fig2_*.png
+fig3_*.png
